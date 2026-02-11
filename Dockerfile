@@ -10,6 +10,6 @@ COPY app/ .
 
 EXPOSE 3000
 
-HEALTHCHECK --interval=30s --start-period=3s --retries=3 CMD curl http://localhost:3000/health
+HEALTHCHECK --interval=30s --start-period=5s --retries=3 CMD curl http://localhost:3000/health
 
 CMD ["python","main.py"]
