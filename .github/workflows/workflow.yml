@@ -18,7 +18,7 @@ jobs:
               with:
                 registry: ghcr.io
                 username: ${{ github.actor}}
-                #GITHUB_TOKEN secret generated previously through GitHub UI
+                #GHCR_PAT with fine grain
                 password: ${{ secrets.GHCR_PAT}}
             
             - name: Build image
