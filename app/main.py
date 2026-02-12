@@ -1,7 +1,6 @@
-#FastAPI 
 from fastapi import FastAPI, Request
 
-#uvicorn is a web server
+#uvicorn web server
 import uvicorn
 from datetime import datetime, timezone
 
