@@ -1,15 +1,25 @@
-#Alternatively use alpine, but would need to install curl separately
-FROM python:3.14.3-slim
+#Build stage
+FROM python:3.14-alpine AS build
 
 WORKDIR /app
 
-COPY app/requirements.txt .
-RUN pip install -r requirements.txt 
+COPY requirements.txt .
 
+#Download the Python packages into /install to copy in the runtime stage
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+#Runtime stage
+FROM python:3.14-alpine
+
+#Copy the installed packages from the build stage
+COPY --from=build /install /usr/local
 COPY app/ .
 
-EXPOSE 3000
+#Install runtime dependencies (curl for healthcheck)
+RUN apk add --no-cache curl
 
-HEALTHCHECK --interval=30s --start-period=5s --retries=3 CMD curl http://localhost:3000/health
+#Healthcheck, terminate the app if unsuccessful
+HEALTHCHECK --interval=30s --start-period=3s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
 
-CMD ["python","main.py"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "3000"]
