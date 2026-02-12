@@ -18,7 +18,7 @@ jobs:
               with:
                 registry: ghcr.io
                 username: ${{ github.actor}}
-                #GHCR_PAT with fine grain
+                #GHCR_PAT with fine grain updated permissions
                 password: ${{ secrets.GHCR_PAT}}
             
             - name: Build image
