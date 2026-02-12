@@ -23,8 +23,18 @@ jobs:
             
             - name: Build image
               run: |
-                docker build -t ghcr.io/${{ github.repository_owner }}/web-app-concept:latest .
+                USERNAME="${GITHUB_REPOSITORY_OWNER,,}"
+                IMAGE_NAME="ghcr.io/$USERNAME/web-app-concept:latest"
+
+                echo "Building Docker image: $IMAGE_NAME"
+                docker build -t $IMAGE_NAME .
 
             - name: Push image
               run: |
-                docker push ghcr.io/${{ github.repository_owner }}/web-app-concept:latest .
+                USERNAME="${GITHUB_REPOSITORY_OWNER,,}"
+                IMAGE_NAME="ghcr.io/$USERNAME/web-app-concept:latest"
+
+                echo "Pushing Docker image: $IMAGE_NAME"
+                docker push $IMAGE_NAME
+              env:
+                GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
